@@ -76,6 +76,24 @@ namespace UnitTests
             Assert.AreEqual(expected: expectedPrice, actual: basket.Total);
         }
 
-        
+        [TestMethod]
+        public void Baskets_Of_Both_Items_And_Books_Of_Same_Type_Costs_Same_As_Sum_Of_Individual_Items()
+        {
+            //Arrange
+            var basket = new Basket();
+            var book1 = new Book(code: 1);
+            var item1 = new Item(price: TestHelper.RandomPrice(0M, 100M));
+            var item2 = new Item(price: TestHelper.RandomPrice(0M, 100M));
+            var expectedPrice = (2 * book1.Price + item1.Price + item2.Price);
+
+            //Act
+            basket.Add(item: book1, qty: 2);
+            basket.Add(item: item1);
+            basket.Add(item: item2);
+
+            //Assert
+            Assert.AreEqual(expected: 4, actual: basket.Items.Count);
+            Assert.AreEqual(expected: expectedPrice, actual: basket.Total);
+        }
     }
 }
