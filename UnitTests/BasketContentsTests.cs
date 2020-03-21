@@ -26,18 +26,15 @@ namespace UnitTests
         {
             //Arrange
             var basket = new Basket();
+            var qtyToAdd = TestHelper.RandomInteger(1, 100);
             var book = new Book(code: 1);
 
             //Act
-            for (var i = 1; i <= 5; i++)
-            {
-                //Act
-                basket.Add(book);
+            basket.Add(item: book, qty: qtyToAdd);
 
-                //Assert
-                Assert.AreEqual(expected: i, actual: basket.Items.Count);
-                Assert.AreEqual(expected: i * 8, actual: basket.Total);
-            }
+            //Assert
+            Assert.AreEqual(expected: qtyToAdd, actual: basket.Items.Count);
+            Assert.AreEqual(expected: qtyToAdd * 8, actual: basket.Total);
         }
     }
 }

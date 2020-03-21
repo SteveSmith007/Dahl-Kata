@@ -13,9 +13,10 @@ namespace Bookstore
         public IList<IItem> Items { get; }
         public decimal Total => Items?.Sum(item => item.Price) ?? 0M;
 
-        public void Add(Book book)
+        public void Add(IItem item, int qty = 1)
         {
-            Items.Add(book);
+            for (var i = 0; i < qty; i++)
+                Items.Add(item);
         }
     }
 }
