@@ -1,2 +1,2 @@
-# Dahl-Kata
-Dahl Kata for AO.com
+# DahlKata
+Roald Dahl kata for AO.com
