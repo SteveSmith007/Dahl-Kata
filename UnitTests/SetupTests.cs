@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
-using Bookstore;
+﻿using Bookstore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
     [TestClass]
-    public class UnitTests
+    public class SetupTests
     {
         [TestMethod]
         public void Basket_Is_Empty_When_Created()
