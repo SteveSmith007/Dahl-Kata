@@ -38,8 +38,13 @@ namespace Bookstore
                 {
                     var added = false;
 
-                    foreach (var bookBundle in bookBundles.Where(bookBundle => bookBundle.Count < (_bookBundleDiscounts.Keys.Count > 0 ? _bookBundleDiscounts.Keys.Max() : 1)))
+                    foreach (var bookBundle in bookBundles.Where(bookBundle =>
+                        bookBundle.Count < (_bookBundleDiscounts.Keys.Count > 0 ? _bookBundleDiscounts.Keys.Max() : 1)))
+                    {
+                        if (added) continue;
+
                         added = bookBundle.Add(book);
+                    }
 
                     if (!added) //Start a new bundle
                         bookBundles.Add(new HashSet<Book>() { book });

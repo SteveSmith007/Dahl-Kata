@@ -40,104 +40,73 @@ namespace UnitTests
                 Assert.AreEqual(expected: qtyToAdd * book.Price, actual: basket.Total);
             }
         }
-
+        
         [TestMethod]
-        public void Baskets_With_Two_Different_Copies_Of_Roald_Dahl_Books_Costs_5PC_Less_Than_Buying_The_Single_Copies()
+        public void Baskets_With_Single_Bundle_Of_Different_Copies_Of_Roald_Dahl_Books_Has_Discount_Applied()
         {
             //Arrange
+            var discount = TestHelper.RandomDiscount();
+            var bundleSize = TestHelper.RandomInteger(1, 100);
+            var expectedPrice = 0M;
+
             var basket = new Basket(new Dictionary<int, decimal>
                 {
-                    {2, .05M},
+                    {bundleSize, discount},
                 }
             );
-            var book1 = new Book(code: 1);
-            var book2 = new Book(code: 2);
-            var expectedPrice = (book1.Price + book2.Price) * .95M;
 
-            //Act
-            basket.Add(book1);
-            basket.Add(book2);
+            for (int i = 1; i <= bundleSize; i++)
+            {
+                //Arrange
+                var book = new Book(code: i);
+                expectedPrice += book.Price;
+
+                //Act
+                basket.Add(book);
+            }
+
+            expectedPrice*=(1M-discount);
 
             //Assert
-            Assert.AreEqual(expected: 2, actual: basket.Items.Count);
+            Assert.AreEqual(expected: bundleSize, actual: basket.Items.Count);
             Assert.AreEqual(expected: expectedPrice, actual: basket.Total);
         }
 
         [TestMethod]
-        public void Baskets_With_Three_Different_Copies_Of_Roald_Dahl_Books_Costs_10PC_Less_Than_Buying_The_Single_Copies()
+        public void Baskets_With_Multiple_Bundles_Of_Different_Copies_Of_Roald_Dahl_Books_Has_Discounts_Applied()
         {
             //Arrange
-            var basket = new Basket(new Dictionary<int, decimal>
+            var bundleRules = new Dictionary<int, decimal>();
+            var books = new List<Book>();
+            var expectedPrice = 0M;
+
+            var maxBundleSize = TestHelper.RandomInteger(1, 10);
+
+            for (int i = 1; i < maxBundleSize; i++)
+            {
+                var discount = TestHelper.RandomDiscount();
+                bundleRules.Add(i,discount);
+
+                var bundlePrice = 0M;
+
+                for (int j = 1; j <= i; j++)
                 {
-                    {3, .1M},
+                    var book = new Book(code: j);
+                    bundlePrice += book.Price;
+                    books.Add(book);
                 }
-            );
-            var book1 = new Book(code: 1);
-            var book2 = new Book(code: 2);
-            var book3 = new Book(code: 3);
-            var expectedPrice = (book1.Price + book2.Price + book3.Price) * .9M;
+                
+                expectedPrice += bundlePrice * (1M - discount);
+            }
+            
+            var basket = new Basket(bundleRules);
 
             //Act
-            basket.Add(item: book1);
-            basket.Add(item: book2);
-            basket.Add(item: book3);
+            foreach (var book in books)
+                basket.Add(book);
 
             //Assert
-            Assert.AreEqual(expected: 3, actual: basket.Items.Count);
-            Assert.AreEqual(expected: expectedPrice, actual: basket.Total);
-        }
-
-        [TestMethod]
-        public void Baskets_With_Four_Different_Copies_Of_Roald_Dahl_Books_Costs_20PC_Less_Than_Buying_The_Single_Copies()
-        {
-            //Arrange
-            var basket = new Basket(new Dictionary<int, decimal>
-                {
-                    {4, .2M},
-                }
-            );
-            var book1 = new Book(code: 1);
-            var book2 = new Book(code: 2);
-            var book3 = new Book(code: 3);
-            var book4 = new Book(code: 4);
-            var expectedPrice = (book1.Price + book2.Price + book3.Price + book4.Price) * .8M;
-
-            //Act
-            basket.Add(item: book1);
-            basket.Add(item: book2);
-            basket.Add(item: book3);
-            basket.Add(item: book4);
-
-            //Assert
-            Assert.AreEqual(expected: 4, actual: basket.Items.Count);
-            Assert.AreEqual(expected: expectedPrice, actual: basket.Total);
-        }
-
-        [TestMethod]
-        public void Baskets_With_Five_Different_Copies_Of_Roald_Dahl_Books_Costs_25PC_Less_Than_Buying_The_Single_Copies()
-        {
-            //Arrange
-            var basket = new Basket(new Dictionary<int, decimal>
-                {
-                    {5, .25M},
-                }
-            );
-            var book1 = new Book(code: 1);
-            var book2 = new Book(code: 2);
-            var book3 = new Book(code: 3);
-            var book4 = new Book(code: 4);
-            var book5 = new Book(code: 5);
-            var expectedPrice = (book1.Price + book2.Price + book3.Price + book4.Price + book5.Price) * .75M;
-
-            //Act
-            basket.Add(item: book1);
-            basket.Add(item: book2);
-            basket.Add(item: book3);
-            basket.Add(item: book4);
-            basket.Add(item: book5);
-
-            //Assert
-            Assert.AreEqual(expected: 5, actual: basket.Items.Count);
+            Assert.AreEqual(expected: books.Count, actual: basket.Items.Count);
             Assert.AreEqual(expected: expectedPrice, actual: basket.Total);
         }
 
