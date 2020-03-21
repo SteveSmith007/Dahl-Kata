@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Bookstore;
+﻿using Bookstore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests

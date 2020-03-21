@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Bookstore
+﻿namespace Bookstore
 {
     public interface IItem
     {
