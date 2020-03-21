@@ -36,7 +36,7 @@ namespace UnitTests
 
                 //Assert
                 Assert.AreEqual(expected: qtyToAdd, actual: basket.Items.Count);
-                Assert.AreEqual(expected: qtyToAdd * 8, actual: basket.Total);
+                Assert.AreEqual(expected: qtyToAdd * book.Price, actual: basket.Total);
             }
         }
     }
