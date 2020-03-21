@@ -39,5 +39,23 @@ namespace UnitTests
                 Assert.AreEqual(expected: qtyToAdd * book.Price, actual: basket.Total);
             }
         }
+
+        [TestMethod]
+        public void Baskets_With_Two_Different_Copies_Of_Roald_Dahl_Books_Costs_5PC_Less_Than_Buying_The_Single_Copies()
+        {
+            //Arrange
+            var basket = new Basket();
+            var book1 = new Book(code: 1);
+            var book2 = new Book(code: 2);
+            var expectedPrice = (book1.Price + book2.Price) * .95M;
+
+            //Act
+            basket.Add(book1);
+            basket.Add(book2);
+
+            //Assert
+            Assert.AreEqual(expected: 2, actual: basket.Items.Count);
+            Assert.AreEqual(expected: expectedPrice, actual: basket.Total);
+        }
     }
 }
