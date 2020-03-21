@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Bookstore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -44,7 +45,11 @@ namespace UnitTests
         public void Baskets_With_Two_Different_Copies_Of_Roald_Dahl_Books_Costs_5PC_Less_Than_Buying_The_Single_Copies()
         {
             //Arrange
-            var basket = new Basket();
+            var basket = new Basket(new Dictionary<int, decimal>
+                {
+                    {2, .05M},
+                }
+            );
             var book1 = new Book(code: 1);
             var book2 = new Book(code: 2);
             var expectedPrice = (book1.Price + book2.Price) * .95M;
@@ -62,7 +67,11 @@ namespace UnitTests
         public void Baskets_With_Three_Different_Copies_Of_Roald_Dahl_Books_Costs_10PC_Less_Than_Buying_The_Single_Copies()
         {
             //Arrange
-            var basket = new Basket();
+            var basket = new Basket(new Dictionary<int, decimal>
+                {
+                    {3, .1M},
+                }
+            );
             var book1 = new Book(code: 1);
             var book2 = new Book(code: 2);
             var book3 = new Book(code: 3);
@@ -75,6 +84,32 @@ namespace UnitTests
 
             //Assert
             Assert.AreEqual(expected: 3, actual: basket.Items.Count);
+            Assert.AreEqual(expected: expectedPrice, actual: basket.Total);
+        }
+
+        [TestMethod]
+        public void Baskets_With_Four_Different_Copies_Of_Roald_Dahl_Books_Costs_20PC_Less_Than_Buying_The_Single_Copies()
+        {
+            //Arrange
+            var basket = new Basket(new Dictionary<int, decimal>
+                {
+                    {4, .2M},
+                }
+            );
+            var book1 = new Book(code: 1);
+            var book2 = new Book(code: 2);
+            var book3 = new Book(code: 3);
+            var book4 = new Book(code: 4);
+            var expectedPrice = (book1.Price + book2.Price + book3.Price + book4.Price) * .8M;
+
+            //Act
+            basket.Add(item: book1);
+            basket.Add(item: book2);
+            basket.Add(item: book3);
+            basket.Add(item: book4);
+
+            //Assert
+            Assert.AreEqual(expected: 4, actual: basket.Items.Count);
             Assert.AreEqual(expected: expectedPrice, actual: basket.Total);
         }
 
@@ -115,6 +150,6 @@ namespace UnitTests
             Assert.AreEqual(expected: 4, actual: basket.Items.Count);
             Assert.AreEqual(expected: expectedPrice, actual: basket.Total);
         }
-        
+
     }
 }

@@ -9,13 +9,9 @@ namespace Bookstore
 
         public IList<IItem> Items { get; }
 
-        public Basket()
+        public Basket(Dictionary<int, decimal> bookBundleDiscounts = null)
         {
-            _bookBundleDiscounts = new Dictionary<int, decimal>()
-            {
-                {2, .05M},
-                {3, .1M},
-            };
+            _bookBundleDiscounts = bookBundleDiscounts ?? new Dictionary<int, decimal>();
 
             Items = new List<IItem>();
         }
@@ -42,7 +38,7 @@ namespace Bookstore
                 {
                     var added = false;
 
-                    foreach (var bookBundle in bookBundles.Where(bookBundle => bookBundle.Count < _bookBundleDiscounts.Keys.Max()))
+                    foreach (var bookBundle in bookBundles.Where(bookBundle => bookBundle.Count < (_bookBundleDiscounts.Keys.Count > 0 ? _bookBundleDiscounts.Keys.Max() : 1)))
                         added = bookBundle.Add(book);
 
                     if (!added) //Start a new bundle
