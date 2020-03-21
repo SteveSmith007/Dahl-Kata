@@ -21,7 +21,11 @@ namespace Bookstore
 
                 foreach (var item in Items)
                 {
-                    if (!(item is Book book)) continue;  //item is not a book
+                    if (!(item is Book book)) //item is not a book}
+                    {
+                        total += item.Price;
+                        continue;
+                    }
 
                     var added = false;
 
