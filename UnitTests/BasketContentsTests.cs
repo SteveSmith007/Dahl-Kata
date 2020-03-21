@@ -22,19 +22,22 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void Basket_With_Only_Copies_Of_First_Roald_Dahl_Book_Costs_That_Of_Buying_As_Many_Single_Copies()
+        public void Basket_With_Only_Copies_Of_Same_Roald_Dahl_Book_Costs_That_Of_Buying_As_Many_Single_Copies()
         {
-            //Arrange
-            var basket = new Basket();
-            var qtyToAdd = TestHelper.RandomInteger(1, 100);
-            var book = new Book(code: 1);
+            for (var i = 1; i <= 5; i++)
+            {
+                //Arrange
+                var basket = new Basket();
+                var qtyToAdd = TestHelper.RandomInteger(1, 100);
+                var book = new Book(code: i);
 
-            //Act
-            basket.Add(item: book, qty: qtyToAdd);
+                //Act
+                basket.Add(item: book, qty: qtyToAdd);
 
-            //Assert
-            Assert.AreEqual(expected: qtyToAdd, actual: basket.Items.Count);
-            Assert.AreEqual(expected: qtyToAdd * 8, actual: basket.Total);
+                //Assert
+                Assert.AreEqual(expected: qtyToAdd, actual: basket.Items.Count);
+                Assert.AreEqual(expected: qtyToAdd * 8, actual: basket.Total);
+            }
         }
     }
 }
