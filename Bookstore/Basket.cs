@@ -5,12 +5,21 @@ namespace Bookstore
 {
     public class Basket
     {
+        private readonly Dictionary<int, decimal> _bookBundleDiscounts;
+
+        public IList<IItem> Items { get; }
+
         public Basket()
         {
+            _bookBundleDiscounts = new Dictionary<int, decimal>()
+            {
+                {2, .05M},
+                {3, .1M},
+            };
+
             Items = new List<IItem>();
         }
 
-        public IList<IItem> Items { get; }
         public decimal Total => BookSubTotal + OtherItemSubTotal;
 
         private decimal OtherItemSubTotal => Items.Where(item => !(item is Book)).Sum(item => item.Price);
@@ -27,15 +36,13 @@ namespace Bookstore
                         books.Add(book);
                 }
 
-                var subTotal = 0M;
-
                 var bookBundles = new List<HashSet<Book>>();
 
                 foreach (var book in books)
                 {
                     var added = false;
 
-                    foreach (var bookBundle in bookBundles.Where(bookBundle => bookBundle.Count < 2))
+                    foreach (var bookBundle in bookBundles.Where(bookBundle => bookBundle.Count < _bookBundleDiscounts.Keys.Max()))
                         added = bookBundle.Add(book);
 
                     if (!added) //Start a new bundle
@@ -43,15 +50,9 @@ namespace Bookstore
 
                 }
 
-                foreach (var bookBundle in bookBundles)
-                {
-                    if (bookBundle.Count == 2)
-                        subTotal += bookBundle.Sum(book => book.Price) * .95M;
-                    else
-                        subTotal += bookBundle.Sum(book => book.Price);
-                }
-
-                return subTotal;
+                return bookBundles.Sum(bookBundle => bookBundle.Sum(book => book.Price) * (1M - (_bookBundleDiscounts.ContainsKey(bookBundle.Count)
+                                                                                               ? _bookBundleDiscounts[bookBundle.Count]
+                                                                                               : 0M)));
             }
         }
 

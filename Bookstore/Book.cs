@@ -12,5 +12,15 @@ namespace Bookstore
         {
             Code = code;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj != null && ((Book)obj).Code == Code;
+        }
+
+        public override int GetHashCode()
+        {
+            return Code;
+        }
     }
 }

@@ -59,6 +59,26 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void Baskets_With_Three_Different_Copies_Of_Roald_Dahl_Books_Costs_10PC_Less_Than_Buying_The_Single_Copies()
+        {
+            //Arrange
+            var basket = new Basket();
+            var book1 = new Book(code: 1);
+            var book2 = new Book(code: 2);
+            var book3 = new Book(code: 3);
+            var expectedPrice = (book1.Price + book2.Price + book3.Price) * .9M;
+
+            //Act
+            basket.Add(item: book1);
+            basket.Add(item: book2);
+            basket.Add(item: book3);
+
+            //Assert
+            Assert.AreEqual(expected: 3, actual: basket.Items.Count);
+            Assert.AreEqual(expected: expectedPrice, actual: basket.Total);
+        }
+
+        [TestMethod]
         public void Baskets_Containing_Items_Other_Than_Books_Costs_Same_As_Sum_Of_Individual_Items()
         {
             //Arrange
@@ -95,5 +115,6 @@ namespace UnitTests
             Assert.AreEqual(expected: 4, actual: basket.Items.Count);
             Assert.AreEqual(expected: expectedPrice, actual: basket.Total);
         }
+        
     }
 }
