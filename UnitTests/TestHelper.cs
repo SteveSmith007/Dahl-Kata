@@ -12,6 +12,11 @@ namespace UnitTests
             return Math.Round(RandomDecimal(value1, value2));
         }
 
+        public static decimal RandomDiscount()
+        {
+            return Math.Round(RandomDecimal(0.01M, 0.99M));
+        }
+
         private static decimal RandomDecimal(decimal value1, decimal value2)
         {
             var min = Math.Min(value1, value2);
@@ -19,6 +24,5 @@ namespace UnitTests
 
             return min + range * (decimal)new Random(Seed: Guid.NewGuid().GetHashCode()).NextDouble();
         }
-
     }
 }

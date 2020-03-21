@@ -114,6 +114,34 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void Baskets_With_Five_Different_Copies_Of_Roald_Dahl_Books_Costs_25PC_Less_Than_Buying_The_Single_Copies()
+        {
+            //Arrange
+            var basket = new Basket(new Dictionary<int, decimal>
+                {
+                    {5, .25M},
+                }
+            );
+            var book1 = new Book(code: 1);
+            var book2 = new Book(code: 2);
+            var book3 = new Book(code: 3);
+            var book4 = new Book(code: 4);
+            var book5 = new Book(code: 5);
+            var expectedPrice = (book1.Price + book2.Price + book3.Price + book4.Price + book5.Price) * .75M;
+
+            //Act
+            basket.Add(item: book1);
+            basket.Add(item: book2);
+            basket.Add(item: book3);
+            basket.Add(item: book4);
+            basket.Add(item: book5);
+
+            //Assert
+            Assert.AreEqual(expected: 5, actual: basket.Items.Count);
+            Assert.AreEqual(expected: expectedPrice, actual: basket.Total);
+        }
+
+        [TestMethod]
         public void Baskets_Containing_Items_Other_Than_Books_Costs_Same_As_Sum_Of_Individual_Items()
         {
             //Arrange
